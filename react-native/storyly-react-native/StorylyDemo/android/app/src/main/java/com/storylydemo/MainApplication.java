@@ -3,6 +3,7 @@ package com.storylydemo;
 import android.app.Application;
 import android.content.Context;
 
+import com.appsamurai.storyly.moments.reactnative.STStorylyMonetizationPackage;
 import com.appsamurai.storyly.reactnative.STStorylyPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -27,7 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-           packages.add(new STStorylyPackage());
+            packages.add(new STStorylyPackage());
+          packages.add(new STStorylyMonetizationPackage());
           return packages;
         }
 

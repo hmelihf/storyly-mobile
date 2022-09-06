@@ -110,6 +110,10 @@ class STStorylyView(context: Context) : FrameLayout(context) {
         Choreographer.getInstance().removeFrameCallback(choreographerFrameCallback)
     }
 
+    fun setAdProvider(testParam: String) {
+        println("test - $testParam")
+    }
+
     private fun manuallyLayout() {
         storylyView.measure(
             MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),

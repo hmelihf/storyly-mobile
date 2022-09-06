@@ -10,7 +10,7 @@
 
 import React, { Component } from 'react';
 import { View, Button, PixelRatio, Dimensions } from 'react-native';
-import { Storyly } from 'storyly-react-native';
+import { Storyly, setAdViewProvider } from 'storyly-react-native';
 
 export default class App extends Component {
     render() {
@@ -19,7 +19,7 @@ export default class App extends Component {
                 <Storyly
                     ref={ref => { this.storyly = ref }}
                     style={{ width: '100%', height: 120, marginTop: 44 }}
-                    storylyId="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40"
+                    storylyId="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjU1NiwiYXBwX2lkIjoxMzg5LCJpbnNfaWQiOjk3NTl9.gnnS2YX5CdgbxbzBEXdK2stT_hlpX6OgXLT0hnztWMU"
                     onLoad={storyGroupList => {
                         console.log("[Storyly] onLoad");
                     }}
@@ -42,8 +42,17 @@ export default class App extends Component {
                         console.log("[Storyly] onStoryUserInteracted");
                     }}/>
                 <Button
-                    onPress={() => { this.storyly.refresh(); }}
+                    onPress={() => {
+                        this.storyly.refresh();
+                    }}
                     title="Refresh"
+                />
+                <Button
+                    onPress={() => {
+                        console.log("[Storyly] aaaaa");
+                        setAdViewProvider(this.storyly, "test aa");
+                    }}
+                    title="Send From Different Pacakge"
                 />
             </View>
         );
