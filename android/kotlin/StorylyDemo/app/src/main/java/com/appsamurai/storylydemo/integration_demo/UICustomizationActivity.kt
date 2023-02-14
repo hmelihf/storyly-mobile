@@ -16,8 +16,6 @@ import com.appsamurai.storyly.styling.StoryGroupTextStyling
 import com.appsamurai.storyly.styling.StoryHeaderStyling
 import com.appsamurai.storylydemo.R
 import com.appsamurai.storylydemo.databinding.ActivityUiCustomizationBinding
-import com.skydoves.colorpickerview.ColorPickerDialog
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class UICustomizationActivity : AppCompatActivity() {
     companion object {
@@ -104,13 +102,13 @@ class UICustomizationActivity : AppCompatActivity() {
                 null,
             )
         )
-
-        storylyView.setStoryGroupListStyling(
-            StoryGroupListStyling(
-                customization.storyGroupListEdgePadding ?: Float.MIN_VALUE,
-                customization.storyGroupListPaddingBetweenItems ?: Float.MIN_VALUE,
-            )
-        )
+//
+//        storylyView.setStoryGroupListStyling(
+//            StoryGroupListStyling(
+//                customization.storyGroupListEdgePadding ?: Float.MIN_VALUE,
+//                customization.storyGroupListPaddingBetweenItems ?: Float.MIN_VALUE,
+//            )
+//        )
     }
 
 
@@ -234,11 +232,7 @@ class UICustomizationActivity : AppCompatActivity() {
     }
 
     private fun showColorPickerDialog(onComplete: ((Int) -> Unit)) {
-        ColorPickerDialog.Builder(this)
-            .setPositiveButton("Confirm",
-                ColorEnvelopeListener { envelope, _ ->  onComplete(envelope.color)})
-            .setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.dismiss() }
-            .show()
+
     }
 
 
