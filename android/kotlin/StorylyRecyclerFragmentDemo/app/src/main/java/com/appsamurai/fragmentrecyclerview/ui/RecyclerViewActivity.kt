@@ -20,7 +20,7 @@ import com.appsamurai.fragmentrecyclerview.databinding.FragmentRecyclerViewBindi
 import com.appsamurai.storyly.StorylyInit
 import com.appsamurai.storyly.StorylyView
 
-const val STORYLY_INSTANCE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40"
+const val STORYLY_INSTANCE_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NfaWQiOjU1NiwiYXBwX2lkIjoxNjExOSwiaW5zX2lkIjoxOTI3M30.ptvyHD553yAorcVW8nBllAfWeX20X8cOgg1mACjlp_M"
 
 class RecyclerViewFragment : Fragment() {
 
@@ -56,7 +56,7 @@ class RecyclerViewFragment : Fragment() {
         private val StorylyViewType = 0
         private val NonStorylyViewType = 1
 
-        private val nonStorylyViewCount = 40
+        private val nonStorylyViewCount = 44
         private val storylyViewCount = 4
 
         // It's safer and network friendly creating StorylyView instance and using it inside RecyclerView instead of creating for each RecyclerView
