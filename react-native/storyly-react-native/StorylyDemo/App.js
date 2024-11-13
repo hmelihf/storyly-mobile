@@ -23,6 +23,7 @@ export default class App extends Component {
         super(props);
 
         this.state = {
+            uniqueKey: 0,
             isHidden: true,
         };
     }
@@ -31,66 +32,18 @@ export default class App extends Component {
         return (
             <View>
                 <ScrollView>
-                    <ShowHideAnimation style={{ width: "100%", height: 100 }} isHidden={this.state.isHidden} >
-                        <Storyly
-                            style={{ width: '100%', height: 100, backgroundColor: "#00ffff" }}
-                            storylyId={STORYLY_TOKEN}
-                            storyGroupSize="small"
-                            onLoad={loadEvent => {
-                                console.log(`[Storyly] default - onLoad`);
-                                this.setState({isHidden: false})
-                            }} />
-                    </ShowHideAnimation>
-                    <TouchableOpacity onPress={() => { this.setState({isHidden: !this.state.isHidden}) }}>
-                        <View style={{ padding: 10, backgroundColor: 'blue' }}>
-                            <Text style={{ color: 'white', textAlign: "center" }}>{this.state.isHidden ? 'Show' : 'Hide'}</Text>
-                        </View>
-                    </TouchableOpacity>
-
                     <Storyly
-                        style={{ width: '100%', height: 100, marginTop: 10, backgroundColor: "#00ffff" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupSize="small"
-                        storyHeaderShareIcon={"share_icon"}
-                        storyHeaderCloseIcon={"close_icon"}
-                        storyItemTextTypeface={"Lobster1.4.otf"}
-                        storyInteractiveTextTypeface={"Lobster1.4.otf"}
-                        storyItemProgressBarColor={["#00FF00", "#FF0000"]}
-                        storyItemIconBorderColor={["#FF0000", "#FF0000"]}
-                        onLoad={loadEvent => {
-                            console.log(`[Storyly] default - onLoad`);
-                        }} />
-                    <Storyly
+                        key={this.state.uniqueKey}
+                        ref={ ref => {
+                            this.storyly = ref;
+                        }}
                         style={{ width: '100%', height: 120, marginTop: 10, backgroundColor: "#7fff00" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupSize="large" />
-                    <Storyly
-                        ref={ref => { this.customStoryly = ref }}
-                        style={{ width: '100%', height: 170, marginTop: 10, backgroundColor: "#e9967a" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupSize="custom"
-                        storyGroupIconHeight={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(80) : 80}
-                        storyGroupIconWidth={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(80) : 80}
-                        storyGroupIconCornerRadius={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(20) : 20}
-                        storyGroupListHorizontalEdgePadding={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(20) : 20}
-                        storyGroupListHorizontalPaddingBetweenItems={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(10) : 10}
-                        storyGroupTextTypeface={"Lobster1.4.otf"}
-                        storyGroupTextSize={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(20) : 20}
-                        storyGroupTextLines={3}
-                        storyGroupTextColorSeen={"#00FF00"}
-                        storyGroupTextColorNotSeen={"#FF0000"}
-                        storyGroupIconBorderColorNotSeen={["#FF0000", "#FF0000"]}
-                        storyGroupIconBorderColorSeen={["#FFFFFF", "#FFFFFF"]}
-                        storyGroupIconBackgroundColor={"#000000"}
-                        storyGroupPinIconColor={"#000000"} />
-                    <Storyly
-                        ref={ref => { this.storyly = ref }}
-                        style={{ width: '100%', height: 178, marginTop: 10, backgroundColor: "#ff00ff" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupViewFactory={{
-                            width: convertToNative(100),
-                            height: convertToNative(178),
-                            customView: CustomPortraitView
+                        storylyId={"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NfaWQiOjU1NiwiYXBwX2lkIjoxMzg5LCJpbnNfaWQiOjE4NjY1fQ._PwkZ48JdHkSU01KUR2n66zJcL29JhykNTMRUorfvE4"}
+                        onLoad={() => {
+                            this.storyly.openStoryWithId("116847");
+                        }} 
+                        onStorylyStoryPresented={() => {
+                            this.state.uniqueKey += 1
                         }} />
                 </ScrollView>
             </View>
