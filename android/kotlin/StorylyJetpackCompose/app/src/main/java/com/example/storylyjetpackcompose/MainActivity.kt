@@ -2,6 +2,7 @@ package com.example.storylyjetpackcompose
 
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,8 +32,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            StorylyJetpackComposeTheme() {
-                // A surface container using the 'background' color from the theme
+            StorylyJetpackComposeTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -107,7 +107,10 @@ fun rememberStorylyView(token: String, storylyListener: StorylyListener): Storyl
 fun StorylyComposeView(modifier: Modifier, storylyView: StorylyView) {
     AndroidView(
         modifier = modifier,
-        factory = { storylyView },
+        factory = {
+            (storylyView.parent as? ViewGroup)?.removeView(storylyView)
+            storylyView
+      },
         update = { _ -> }
     )
 }
