@@ -19,13 +19,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.appsamurai.storyly.Story
-import com.appsamurai.storyly.StoryComponent
 import com.appsamurai.storyly.StoryGroup
 import com.appsamurai.storyly.StorylyDataSource
 import com.appsamurai.storyly.StorylyInit
 import com.appsamurai.storyly.StorylyListener
 import com.appsamurai.storyly.StorylyView
-import com.appsamurai.storyly.analytics.StorylyEvent
 import com.appsamurai.storyly.config.StorylyConfig
 import com.example.storylyjetpackcompose.ui.theme.StorylyJetpackComposeTheme
 
@@ -45,9 +43,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun LazyTestView() {
-    val storylyView = rememberStorylyView("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40")
+    val storylyView = rememberStorylyView(
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40",
+        object : StorylyListener {
+            override fun storylyLoaded(
+                storylyView: StorylyView,
+                storyGroupList: List<StoryGroup>,
+                dataSource: StorylyDataSource
+            ) {
+                Log.d("[Storyly]", "storylyLoaded:${storyGroupList.size}")
+            }
+
+            override fun storylyLoadFailed(storylyView: StorylyView, errorMessage: String) {
+                Log.d("[Storyly]", "storylyLoadFailed:errorMessage:$errorMessage")
+            }
+
+            override fun storylyActionClicked(storylyView: StorylyView, story: Story) {
+                Log.d("[Storyly]", "storylyActionClicked:story:${story.actionUrl}")
+            }
+        }
+    )
 
     LazyColumn {
         item {
@@ -71,7 +89,7 @@ fun LazyTestView() {
 }
 
 @Composable
-fun rememberStorylyView(token: String): StorylyView {
+fun rememberStorylyView(token: String, storylyListener: StorylyListener): StorylyView {
     val context = LocalContext.current
     val storylyView = remember(context, token) {
         StorylyView(context).apply {
@@ -79,6 +97,7 @@ fun rememberStorylyView(token: String): StorylyView {
                 token,
                 StorylyConfig.Builder().build()
             )
+            this.storylyListener = storylyListener
         }
     }
     return storylyView
@@ -89,65 +108,6 @@ fun StorylyComposeView(modifier: Modifier, storylyView: StorylyView) {
     AndroidView(
         modifier = modifier,
         factory = { storylyView },
-        update = { view ->
-            view.storylyListener = object : StorylyListener {
-                override fun storylyLoaded(
-                    storylyView: StorylyView,
-                    storyGroupList: List<StoryGroup>,
-                    dataSource: StorylyDataSource
-                ) {
-                    super.storylyLoaded(storylyView, storyGroupList, dataSource)
-                    Log.d("[Storyly]", "storylyLoaded:${storyGroupList.size}")
-                }
-
-                override fun storylyLoadFailed(storylyView: StorylyView, errorMessage: String) {
-                    super.storylyLoadFailed(storylyView, errorMessage)
-                    Log.d("[Storyly]", "storylyLoadFailed:errorMessage:$errorMessage")
-                }
-
-                override fun storylyActionClicked(storylyView: StorylyView, story: Story) {
-                    storylyView.pauseStory()
-                }
-
-                override fun storylyStoryShown(storylyView: StorylyView) {
-                    super.storylyStoryShown(storylyView)
-                    Log.d("[Storyly]", "storylyStoryShown")
-                }
-
-                override fun storylyStoryDismissed(storylyView: StorylyView) {
-                    super.storylyStoryDismissed(storylyView)
-                    Log.d("[Storyly]", "storylyStoryDismissed")
-                }
-
-                override fun storylyStoryShowFailed(
-                    storylyView: StorylyView,
-                    errorMessage: String
-                ) {
-                    super.storylyStoryShowFailed(storylyView, errorMessage)
-                    Log.d("[Storyly]", "storylyStoryShowFailed:$errorMessage")
-                }
-
-                override fun storylyUserInteracted(
-                    storylyView: StorylyView,
-                    storyGroup: StoryGroup,
-                    story: Story,
-                    storyComponent: StoryComponent
-                ) {
-                    super.storylyUserInteracted(storylyView, storyGroup, story, storyComponent)
-                    Log.d("[Storyly]", "storylyStoryLayerInteracted")
-                }
-
-                override fun storylyEvent(
-                    storylyView: StorylyView,
-                    event: StorylyEvent,
-                    storyGroup: StoryGroup?,
-                    story: Story?,
-                    storyComponent: StoryComponent?
-                ) {
-                    super.storylyEvent(storylyView, event, storyGroup, story, storyComponent)
-                    Log.d("[Storyly]", "storylyEvent:${event.name}")
-                }
-            }
-        }
+        update = { _ -> }
     )
 }
