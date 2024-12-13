@@ -5,18 +5,28 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.appsamurai.storyly.*
+import com.appsamurai.storyly.Story
+import com.appsamurai.storyly.StoryComponent
+import com.appsamurai.storyly.StoryGroup
+import com.appsamurai.storyly.StorylyDataSource
+import com.appsamurai.storyly.StorylyInit
+import com.appsamurai.storyly.StorylyListener
+import com.appsamurai.storyly.StorylyView
 import com.appsamurai.storyly.analytics.StorylyEvent
 import com.appsamurai.storyly.config.StorylyConfig
-import com.appsamurai.storyly.config.styling.group.StorylyStoryGroupStyling
-import com.appsamurai.storyly.config.styling.story.StorylyStoryStyling
 import com.example.storylyjetpackcompose.ui.theme.StorylyJetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,30 +39,57 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    StorylyView("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40")
+                    LazyTestView()
                 }
             }
         }
     }
 }
+@Composable
+fun LazyTestView() {
+    val storylyView = rememberStorylyView("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40")
+
+    LazyColumn {
+        item {
+            StorylyComposeView(
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                storylyView,
+            )
+        }
+        items(50) { index ->
+            Text(
+                text = "Item $index",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                style = MaterialTheme.typography.body1
+            )
+        }
+    }
+}
 
 @Composable
-fun StorylyView(token: String) {
-    val token = remember { mutableStateOf(token) }
-
-    // Adds view to Compose
-    AndroidView(
-        modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
-        factory = { context ->
-            // Create StorylyView
-            StorylyView(context)
-        },
-        update = { view ->
-            view.storylyInit = StorylyInit(
-                token.value,
-                StorylyConfig.Builder()
-                    .build()
+fun rememberStorylyView(token: String): StorylyView {
+    val context = LocalContext.current
+    val storylyView = remember(context, token) {
+        StorylyView(context).apply {
+            storylyInit = StorylyInit(
+                token,
+                StorylyConfig.Builder().build()
             )
+        }
+    }
+    return storylyView
+}
+
+@Composable
+fun StorylyComposeView(modifier: Modifier, storylyView: StorylyView) {
+    AndroidView(
+        modifier = modifier,
+        factory = { storylyView },
+        update = { view ->
             view.storylyListener = object : StorylyListener {
                 override fun storylyLoaded(
                     storylyView: StorylyView,
@@ -69,7 +106,6 @@ fun StorylyView(token: String) {
                 }
 
                 override fun storylyActionClicked(storylyView: StorylyView, story: Story) {
-                    // Navigate
                     storylyView.pauseStory()
                 }
 
