@@ -9,7 +9,7 @@
  */
 
 import React, { Component, useState, useRef, useEffect } from 'react';
-import { View, Image, Text, PixelRatio, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { Dimensions, View, Image, Text, StyleSheet, PixelRatio, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { Storyly } from 'storyly-react-native';
 
 
@@ -21,78 +21,24 @@ const STORYLY_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NfaWQiOjU1Niwi
 export default class App extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isHidden: true,
-        };
     }
 
     render() {
         return (
             <View>
-                <ScrollView>
-                    <ShowHideAnimation style={{ width: "100%", height: 100 }} isHidden={this.state.isHidden} >
-                        <Storyly
-                            style={{ width: '100%', height: 100, backgroundColor: "#00ffff" }}
-                            storylyId={STORYLY_TOKEN}
-                            storyGroupSize="small"
-                            onLoad={loadEvent => {
-                                console.log(`[Storyly] default - onLoad`);
-                                this.setState({isHidden: false})
-                            }} />
-                    </ShowHideAnimation>
-                    <TouchableOpacity onPress={() => { this.setState({isHidden: !this.state.isHidden}) }}>
-                        <View style={{ padding: 10, backgroundColor: 'blue' }}>
-                            <Text style={{ color: 'white', textAlign: "center" }}>{this.state.isHidden ? 'Show' : 'Hide'}</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <Storyly
-                        style={{ width: '100%', height: 100, marginTop: 10, backgroundColor: "#00ffff" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupSize="small"
-                        storyHeaderShareIcon={"share_icon"}
-                        storyHeaderCloseIcon={"close_icon"}
-                        storyItemTextTypeface={"Lobster1.4.otf"}
-                        storyInteractiveTextTypeface={"Lobster1.4.otf"}
-                        storyItemProgressBarColor={["#00FF00", "#FF0000"]}
-                        storyItemIconBorderColor={["#FF0000", "#FF0000"]}
-                        onLoad={loadEvent => {
-                            console.log(`[Storyly] default - onLoad`);
-                        }} />
-                    <Storyly
-                        style={{ width: '100%', height: 120, marginTop: 10, backgroundColor: "#7fff00" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupSize="large" />
-                    <Storyly
-                        ref={ref => { this.customStoryly = ref }}
-                        style={{ width: '100%', height: 170, marginTop: 10, backgroundColor: "#e9967a" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupSize="custom"
-                        storyGroupIconHeight={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(80) : 80}
-                        storyGroupIconWidth={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(80) : 80}
-                        storyGroupIconCornerRadius={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(20) : 20}
-                        storyGroupListHorizontalEdgePadding={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(20) : 20}
-                        storyGroupListHorizontalPaddingBetweenItems={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(10) : 10}
-                        storyGroupTextTypeface={"Lobster1.4.otf"}
-                        storyGroupTextSize={Platform.OS === 'android' ? PixelRatio.getPixelSizeForLayoutSize(20) : 20}
-                        storyGroupTextLines={3}
-                        storyGroupTextColorSeen={"#00FF00"}
-                        storyGroupTextColorNotSeen={"#FF0000"}
-                        storyGroupIconBorderColorNotSeen={["#FF0000", "#FF0000"]}
-                        storyGroupIconBorderColorSeen={["#FFFFFF", "#FFFFFF"]}
-                        storyGroupIconBackgroundColor={"#000000"}
-                        storyGroupPinIconColor={"#000000"} />
-                    <Storyly
-                        ref={ref => { this.storyly = ref }}
-                        style={{ width: '100%', height: 178, marginTop: 10, backgroundColor: "#ff00ff" }}
-                        storylyId={STORYLY_TOKEN}
-                        storyGroupViewFactory={{
-                            width: convertToNative(100),
-                            height: convertToNative(178),
-                            customView: CustomPortraitView
-                        }} />
-                </ScrollView>
+                <Storyly
+                    style={{ width: '100%', height: '100%', marginTop: 10, backgroundColor: "#fe000000" }}
+                    storylyId={STORYLY_TOKEN}
+                    storyGroupSize="custom"
+                    storyGroupListOrientation='vertical'
+                    storyGroupViewFactory={{
+                        width: convertToNative(Dimensions.get('window').width),
+                        height: convertToNative(Dimensions.get('window').height) / 6,
+                        customView: CustomPortraitView,
+                    }}
+                    onLoad={loadEvent => {
+                        console.log(`[Storyly] default - onLoad`);
+                    }} />
             </View>
         );
     }
@@ -106,21 +52,53 @@ const convertToNative = (size) => {
 const CustomPortraitView = ({ storyGroup }) => {
     return (
         <>
-            {(storyGroup ? (
-                <View style={{ width: 100, height: 178 }}>
-                    <Image style={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 8
-                    }}
-                        source={{ uri: storyGroup.iconUrl }} />
-                    <View style={{ width: 100, height: 168, borderRadius: 8, position: 'absolute', backgroundColor: storyGroup.seen ? "#16ad055f" : "#1905ad5f" }}>
-                        <View style={{ flexDirection: 'column', width: 90, marginTop: 20, marginLeft: 5, height: "100%", alignItems: 'center', justifyContent: 'flex-start' }}>
-                            {storyGroup.pinned ?
-                                <Image style={{ width: 20, height: 20, marginTop: 5, marginBottom: 10, borderRadius: 10 }} source={PIN_ICON} /> : <View style={{ width: 20, height: 20, marginTop: 5, marginBottom: 10 }} />}
-                            <Text style={{ flexWrap: 'wrap', width: "90%", textAlign: 'center', fontWeight: 'bold', fontSize: 15, color: "white" }}>{storyGroup.title}</Text>
+        {(storyGroup ? (
+            <View
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    padding: 20,
+                }} >
+                <View
+                    style={{
+                        backgroundColor: '#fff',
+                        borderRadius: 8,
+                        padding: 15,
+                        marginVertical: 8,
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.1,
+                        shadowRadius: 4,
+                        elevation: 2,
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
+                        <Image
+                            source={{ uri: storyGroup.iconUrl }}
+                            style={{
+                                width: 100,
+                                height: 100,
+                                borderRadius: 10,
+                                marginRight: 15,
+                            }}
+                        />
+                        <View>
+                            <Text style={{
+                                    fontSize: 18,
+                                    fontWeight: 'bold',
+                                    color: '#333',
+                                    marginBottom: 5,
+                                }}>{storyGroup.title}</Text>
+                            <Text style={{
+                                    fontSize: 14,
+                                    color: '#666',
+                                }}>SubTitleTest</Text>
                         </View>
                     </View>
+                </View>
                 </View>
             ) : (
                 <View style={{ width: "100%", height: "100%", borderRadius: 8 }}></View>
