@@ -16,17 +16,50 @@ class BasicViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.storylyView.storylyInit = StorylyInit(storylyId: STORYLY_INSTANCE_TOKEN)
+        self.storylyView.storylyInit = StorylyInit(storylyId: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40")
         self.storylyView.rootViewController = self
+        self.storylyView.delegate = self
+    }
+}
+
+extension BasicViewController: StorylyDelegate {
+    func storylyActionClicked(_ storylyView: StorylyView, rootViewController: UIViewController, story: Story) {
+        let vc = UIViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.view.backgroundColor = .white
         
-        let storylyViewProgrammatic = StorylyView()
-        storylyViewProgrammatic.translatesAutoresizingMaskIntoConstraints = false
-        storylyViewProgrammatic.storylyInit = StorylyInit(storylyId: STORYLY_INSTANCE_TOKEN)
-        storylyViewProgrammatic.rootViewController = self
-        self.view.addSubview(storylyViewProgrammatic)
-        storylyViewProgrammatic.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        storylyViewProgrammatic.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        storylyViewProgrammatic.topAnchor.constraint(equalTo: self.storylyView.bottomAnchor, constant: 10).isActive = true
-        storylyViewProgrammatic.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        let button = UIButton(type: .system)
+        button.setTitle("Back", for: .normal)
+        button.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        vc.view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor),
+            button.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor)
+        ])
+        rootViewController.topViewController()?.present(vc, animated: true)
+    }
+    
+    
+    @objc private func dismissViewController() {
+        self.topViewController()?.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+
+extension UIViewController {
+    func topViewController() -> UIViewController? {
+        if let presentedViewController = presentedViewController {
+            return presentedViewController.topViewController()
+        }
+        if let navigationController = self as? UINavigationController {
+            return navigationController.visibleViewController?.topViewController()
+        }
+        if let tabBarController = self as? UITabBarController {
+            return tabBarController.selectedViewController?.topViewController()
+        }
+        return self
     }
 }
