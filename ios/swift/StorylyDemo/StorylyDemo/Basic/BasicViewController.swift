@@ -13,6 +13,8 @@ class BasicViewController: UIViewController {
 
     @IBOutlet weak var storylyView: StorylyView!
     
+    weak var popupVC: UIViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -25,41 +27,26 @@ class BasicViewController: UIViewController {
 extension BasicViewController: StorylyDelegate {
     func storylyActionClicked(_ storylyView: StorylyView, rootViewController: UIViewController, story: Story) {
         let vc = UIViewController()
-        vc.modalPresentationStyle = .overFullScreen
+        vc.modalPresentationStyle = .fullScreen
         vc.view.backgroundColor = .white
         
         let button = UIButton(type: .system)
         button.setTitle("Back", for: .normal)
         button.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        
         vc.view.addSubview(button)
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor)
         ])
-        rootViewController.topViewController()?.present(vc, animated: true)
+
+        popupVC = vc
+        rootViewController.present(vc, animated: true)
     }
     
     
     @objc private func dismissViewController() {
-        self.topViewController()?.dismiss(animated: true, completion: nil)
-    }
-}
-
-
-
-extension UIViewController {
-    func topViewController() -> UIViewController? {
-        if let presentedViewController = presentedViewController {
-            return presentedViewController.topViewController()
-        }
-        if let navigationController = self as? UINavigationController {
-            return navigationController.visibleViewController?.topViewController()
-        }
-        if let tabBarController = self as? UITabBarController {
-            return tabBarController.selectedViewController?.topViewController()
-        }
-        return self
+        popupVC?.dismiss(animated: true, completion: nil)
+        popupVC = nil
     }
 }
