@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.storylyjetpackcompose'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.storylyjetpackcompose"
         minSdk 24
-        targetSdk 33
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -54,11 +54,16 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     implementation 'androidx.compose.material:material:1.2.0'
+
+    // optional - Jetpack Compose integration
+    implementation("androidx.paging:paging-compose:3.3.6")
+    implementation("androidx.paging:paging-runtime-ktx:3.3.6")
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
+
     // Storyly SDK
-    implementation 'com.appsamurai.storyly:storyly:3.9.0'
+    implementation 'com.appsamurai.storyly:storyly:4.8.0'
     // Moments SDK
     implementation 'com.appsamurai.storyly:storyly-moments:0.5.1'
 }
