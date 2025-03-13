@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -21,7 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.appsamurai.storyly.StoryGroup
+import com.appsamurai.storyly.StorylyDataSource
 import com.appsamurai.storyly.StorylyInit
+import com.appsamurai.storyly.StorylyListener
 import com.appsamurai.storyly.StorylyView
 import com.example.storylyjetpackcompose.ui.theme.StorylyJetpackComposeTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,28 +36,39 @@ class MainActivity : ComponentActivity() {
 
     private val dummyItems = createDummyFlow()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             StorylyJetpackComposeTheme() {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val storylyView = createStorylyView(StorylyInitItem("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40"))
                     val pagingList = dummyItems.collectAsLazyPagingItems()
+
+                    val storylyViewItem = remember(pagingList.itemSnapshotList.items) {
+                        pagingList.itemSnapshotList.items.firstOrNull { it is StorylyInitItem } as? StorylyInitItem
+                    }
+                    val storylyView = rememberStorylyView(storylyViewItem, object : StorylyListener {
+                        override fun storylyLoaded(
+                            storylyView: StorylyView,
+                            storyGroupList: List<StoryGroup>,
+                            dataSource: StorylyDataSource
+                        ) {
+                            println("TEST: StorylyListener: ${storylyView} - ${dataSource.value} - ${storyGroupList.size}")
+                        }
+                    })
+
                     LazyColumn(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxSize(),
                     ) {
                         items(pagingList.itemCount, key = { itemId -> itemId }) { itemId ->
-                            val pagingItem = pagingList[itemId]
-                            when (pagingItem) {
-                                is StorylyInitItem -> storylyView?.let {
-                                    println("TEST: lazy: compose")
-                                    StorylyView(storylyView)
+                            when (val pagingItem = pagingList[itemId]) {
+                                is StorylyInitItem -> {
+                                    storylyView?.let {
+                                        StorylyViewCompose(storylyView)
+                                    }
                                 }
                                 is DummyItem -> {
                                     Box(Modifier.fillMaxWidth().height(120.dp).background(pagingItem.color))
@@ -65,8 +81,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun createDummyFlow(): MutableStateFlow<PagingData<PagingItem>> {
-        val fakeData: List<PagingItem> = List(10) {
+    private fun createDummyFlow(): MutableStateFlow<PagingData<PagingItem>> {
+        val fakeData: List<PagingItem> = List(20) {
             if (it == 0) {
                 StorylyInitItem("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjc2MCwiYXBwX2lkIjo0MDUsImluc19pZCI6NDA0fQ.1AkqOy_lsiownTBNhVOUKc91uc9fDcAxfQZtpm3nj40")
             } else {
@@ -84,32 +100,37 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun createStorylyView(
-    item: StorylyInitItem?
+fun rememberStorylyView(
+    item: StorylyInitItem?,
+    listener: StorylyListener,
 ): StorylyView? {
-    item ?: return null
-    println("TEST: createStorylyView: inside")
     val context = LocalContext.current
     val storylyView = remember(item) {
-        StorylyView(context).apply {
-            this.storylyInit = StorylyInit(item.token)
+        println("TEST: createStorylyView: $item")
+        item?.let {
+            StorylyView(context).apply {
+                this.storylyInit = StorylyInit(item.token)
+                this.storylyListener = listener
+            }
         }
     }
     return storylyView
 }
 
 @Composable
-fun StorylyView(storylyView: StorylyView?) {
-    storylyView ?: return
-
-    AndroidView(modifier = Modifier
-        .fillMaxWidth(),
+fun StorylyViewCompose(storylyView: StorylyView) {
+    AndroidView(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .defaultMinSize(minHeight = 1.dp),
         factory = { _ ->
-            // Ensure the storylyView is removed from its parent if it has one
+            println("TEST: StorylyViewCompose: AndroidView: factory: ${storylyView}")
             (storylyView.parent as? ViewGroup)?.removeView(storylyView)
             storylyView
         },
         update = { view ->
+            println("TEST: StorylyViewCompose: AndroidView: update: ${storylyView}")
         }
     )
 }

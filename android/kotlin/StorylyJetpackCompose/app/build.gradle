@@ -63,7 +63,7 @@ dependencies {
 
 
     // Storyly SDK
-    implementation 'com.appsamurai.storyly:storyly:4.8.0'
+    implementation 'com.appsamurai.storyly:storyly:4.10.0'
     // Moments SDK
     implementation 'com.appsamurai.storyly:storyly-moments:0.5.1'
 }
