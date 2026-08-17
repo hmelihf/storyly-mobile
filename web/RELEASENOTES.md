@@ -1,5 +1,11 @@
 # Release Notes
 
+### 1.13.2 (17.08.2026)
+
+- fixed swipe card items rendering without product name and price.
+- fixed the product bottom sheet not opening from interactive layers in story bar and video Feed.
+- fixed banner buttons not opening their assigned story groups in the banner to story flow.
+
 ### 1.13.0 (07.08.2026)
 
 - added networkConfig parameter to support configurable API/CDN
