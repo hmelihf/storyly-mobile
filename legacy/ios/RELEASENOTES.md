@@ -1,4 +1,7 @@
 # Release Notes
+### 4.21.1 (31.08.2026)
+* improved story and feed dismiss flow
+
 ### 4.21.0 (31.07.2026)
 * added Polish localization support
 
