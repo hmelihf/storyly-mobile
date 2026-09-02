@@ -1,5 +1,9 @@
 # Release Notes
 
+### 4.12.1 - 02.09.2026 [for cdn](https://web-story.storyly.io/sdk/4.12.1/storyly-web.js)
+
+- fixed mobile/desktop layout detection is now viewport-based to ensure the correct view on wide screens and after window resize
+
 ### 4.12.0 - 07.08.2026 [for cdn](https://web-story.storyly.io/sdk/4.12.0/storyly-web.js)
 
 - added networkConfig parameter to support configurable API/CDN
