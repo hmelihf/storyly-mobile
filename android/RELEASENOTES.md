@@ -1,4 +1,7 @@
 # Release Notes
+### 1.13.0 (04.09.2026)
+* added fill button support in canvas widget
+  
 ### 1.12.0 (31.07.2026)
 * added Polish localization support
 * added visibility support for navigation bar in video feed widget
