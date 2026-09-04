@@ -1,4 +1,9 @@
 # Release Notes
+### 4.21.2 (04.09.2026)
+* fixed rating interactive component interaction bug in story bar
+* fixed rating interactive component interaction bug in vertical feed
+* fixed duplicate video cover issue in story bar
+  
 ### 4.21.1 (31.08.2026)
 * improved story and feed dismiss flow
 
