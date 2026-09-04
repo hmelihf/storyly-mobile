@@ -1,4 +1,10 @@
 # Release Notes
+### 1.13.0 (04.09.2026)
+* added fill button support in canvas widget
+* fixed rating interactive component interaction bug in video feed widget
+* fixed duplicate video cover issue in story bar widget
+* fixed rating interactive component interaction bug in story bar widget
+  
 ### 1.12.0 (31.07.2026)
 * added Polish localization support
 * added visibility support for navigation bar in video feed widget
