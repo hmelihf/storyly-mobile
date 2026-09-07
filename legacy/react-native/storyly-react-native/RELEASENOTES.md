@@ -1,5 +1,21 @@
 # Release Notes
 * If you are using new Fabric architecture please use [storyly-react-native-fabric](https://github.com/Netvent/storyly-sdk/blob/master/legacy/react-native/storyly-react-native-fabric/RELEASENOTES.md) package.
+### 4.21.2 (07.09.2026)
+* added Polish localization support
+* fixed capitalization in German localization
+* improved vertical feed tutorial view present logic
+* improved story transition handling in case of layer fails
+* fixed rating interactive component interaction bug in story bar on ios platform
+* fixed rating interactive component interaction bug in vertical feed on ios platform
+* fixed a bug related to background color of swipe up interactive component on ios platform
+* fixed a bug related to vertical feed presenter layouting on ios platform
+* fixed duplicate video cover issue in story bar on ios platform
+* improved story and feed dismiss flow on ios platform
+* improved video observers for storyly and vertical feed on ios platform
+* fixed an interaction crash on vertical feed presenter view if feed is empty on ios platform
+* fixed inconsistent scrolling behavior for video feed presenter on android platform
+* fixed a bug related to pause/resume flow of vertical feed presenter on android platform
+
 ### 4.19.0 (02.12.2025)
 * added play/pause/replay accesibility controls for stories
 * added lowest price availability for eu regulations for product related interactive components
