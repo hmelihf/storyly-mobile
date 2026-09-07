@@ -2254,32 +2254,32 @@ PODS:
     - React-utils (= 0.81.1)
     - SocketRocket
   - SocketRocket (0.7.1)
-  - StorylyPlacement (1.12.0):
-    - StorylyPlacement/Analytics (= 1.12.0)
-    - StorylyPlacement/Banner (= 1.12.0)
-    - StorylyPlacement/Canvas (= 1.12.0)
-    - StorylyPlacement/Core (= 1.12.0)
-    - StorylyPlacement/CoreInternal (= 1.12.0)
-    - StorylyPlacement/Placement (= 1.12.0)
-    - StorylyPlacement/RetailMedia (= 1.12.0)
-    - StorylyPlacement/StoryBar (= 1.12.0)
-    - StorylyPlacement/SwipeCard (= 1.12.0)
-    - StorylyPlacement/VideoFeed (= 1.12.0)
-  - StorylyPlacement/Analytics (1.12.0)
-  - StorylyPlacement/Banner (1.12.0)
-  - StorylyPlacement/Canvas (1.12.0)
-  - StorylyPlacement/Core (1.12.0)
-  - StorylyPlacement/CoreInternal (1.12.0)
-  - StorylyPlacement/Placement (1.12.0):
+  - StorylyPlacement (1.13.0):
+    - StorylyPlacement/Analytics (= 1.13.0)
+    - StorylyPlacement/Banner (= 1.13.0)
+    - StorylyPlacement/Canvas (= 1.13.0)
+    - StorylyPlacement/Core (= 1.13.0)
+    - StorylyPlacement/CoreInternal (= 1.13.0)
+    - StorylyPlacement/Placement (= 1.13.0)
+    - StorylyPlacement/RetailMedia (= 1.13.0)
+    - StorylyPlacement/StoryBar (= 1.13.0)
+    - StorylyPlacement/SwipeCard (= 1.13.0)
+    - StorylyPlacement/VideoFeed (= 1.13.0)
+  - StorylyPlacement/Analytics (1.13.0)
+  - StorylyPlacement/Banner (1.13.0)
+  - StorylyPlacement/Canvas (1.13.0)
+  - StorylyPlacement/Core (1.13.0)
+  - StorylyPlacement/CoreInternal (1.13.0)
+  - StorylyPlacement/Placement (1.13.0):
     - StorylyPlacement/Analytics
     - StorylyPlacement/Core
     - StorylyPlacement/CoreInternal
     - StorylyPlacement/RetailMedia
-  - StorylyPlacement/RetailMedia (1.12.0)
-  - StorylyPlacement/StoryBar (1.12.0)
-  - StorylyPlacement/SwipeCard (1.12.0)
-  - StorylyPlacement/VideoFeed (1.12.0)
-  - StorylyPlacementReactNative (1.12.0):
+  - StorylyPlacement/RetailMedia (1.13.0)
+  - StorylyPlacement/StoryBar (1.13.0)
+  - StorylyPlacement/SwipeCard (1.13.0)
+  - StorylyPlacement/VideoFeed (1.13.0)
+  - StorylyPlacementReactNative (1.13.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2306,7 +2306,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - SocketRocket
-    - StorylyPlacement (= 1.12.0)
+    - StorylyPlacement (= 1.13.0)
     - Yoga
   - Yoga (0.0.0)
 
@@ -2610,8 +2610,8 @@ SPEC CHECKSUMS:
   ReactCodegen: 4d203eddf6f977caa324640a20f92e70408d648b
   ReactCommon: ce5d4226dfaf9d5dacbef57b4528819e39d3a120
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  StorylyPlacement: 39513c5c47277be056637aca6a6e0f10ae4da734
-  StorylyPlacementReactNative: a68be9a490994e4eb9dedf056b04b580c3d78bb3
+  StorylyPlacement: 54ea183993563f21a1621e450baabb426b968b3e
+  StorylyPlacementReactNative: bbc718e9a11ed520bd8206bb62f51a06d92ddbea
   Yoga: 11c9686a21e2cd82a094a723649d9f4507200fb0
 
 PODFILE CHECKSUM: 074be28d111c46ae0ae9b90511fb2b05f30dc664

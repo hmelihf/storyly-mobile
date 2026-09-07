@@ -1,4 +1,10 @@
 # Release Notes
+### 1.13.0 (07.08.2026)
+* added fill button support in canvas widget
+* fixed rating interactive component interaction bug in video feed widget on ios platform
+* fixed rating interactive component interaction bug in story bar widget on ios platform
+* fixed duplicate video cover issue in story bar widget on ios platform
+
 ### 1.12.0 (05.08.2026)
 * renamed public structures to sync with native sdks, please refer to [technical documentation](https://docs.storyly.io/docs/reactnative-placement-initial-setup)
 * fixed gradient view round corners in banner widget
