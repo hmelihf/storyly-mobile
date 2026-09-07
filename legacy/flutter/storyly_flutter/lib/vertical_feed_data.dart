@@ -5,73 +5,63 @@ import 'storyly_flutter.dart';
 import 'storyly_util.dart';
 
 /// [VerticalFeed] created callback
-typedef VerticalFeedCreatedCallback = void Function(
-  VerticalFeedController controller,
-);
+typedef VerticalFeedCreatedCallback =
+    void Function(VerticalFeedController controller);
 
 /// [VerticalFeed] created callback
-typedef VerticalFeedPresenterCreatedCallback = void Function(
-  VerticalFeedPresenterController controller,
-);
+typedef VerticalFeedPresenterCreatedCallback =
+    void Function(VerticalFeedPresenterController controller);
 
 /// [VerticalFeed] loaded callback
-typedef VerticalFeedLoadedCallback = void Function(
-  List<VerticalFeedGroup> feedGroupList,
-  String dataSource,
-);
+typedef VerticalFeedLoadedCallback =
+    void Function(List<VerticalFeedGroup> feedGroupList, String dataSource);
 
 /// [VerticalFeed] load failed callback
-typedef VerticalFeedLoadFailedCallback = void Function(
-  String message,
-);
+typedef VerticalFeedLoadFailedCallback = void Function(String message);
 
 /// [VerticalFeed] present failed callback
-typedef VerticalFeedPresentFailed = void Function(
-  String message,
-);
+typedef VerticalFeedPresentFailed = void Function(String message);
 
 /// [VerticalFeed] action clicked callback
-typedef VerticalFeedActionClickedCallback = void Function(
-  VerticalFeedItem feedItem,
-);
+typedef VerticalFeedActionClickedCallback =
+    void Function(VerticalFeedItem feedItem);
 
 /// [VerticalFeed] user interacted callback
-typedef VerticalFeedUserInteractedCallback = void Function(
-  VerticalFeedGroup feedGroup,
-  VerticalFeedItem feedItem,
-  VerticalFeedItemComponent? verticalFeedItemComponent,
-);
+typedef VerticalFeedUserInteractedCallback =
+    void Function(
+      VerticalFeedGroup feedGroup,
+      VerticalFeedItem feedItem,
+      VerticalFeedItemComponent? verticalFeedItemComponent,
+    );
 
 /// [VerticalFeed] event callback
-typedef VerticalFeedEventCallback = void Function(
-  String event,
-  VerticalFeedGroup? feedGroup,
-  VerticalFeedItem? feedItem,
-  VerticalFeedItemComponent? verticalFeedItemComponent,
-);
+typedef VerticalFeedEventCallback =
+    void Function(
+      String event,
+      VerticalFeedGroup? feedGroup,
+      VerticalFeedItem? feedItem,
+      VerticalFeedItemComponent? verticalFeedItemComponent,
+    );
 
 /// [VerticalFeed]  on product hydration callback
-typedef VerticalFeedOnProductHydrationCallback = void Function(
-  List<ProductInformation> products,
-);
+typedef VerticalFeedOnProductHydrationCallback =
+    void Function(List<ProductInformation> products);
 
 /// [VerticalFeed]  on product event callback
 typedef VerticalFeedProductEventCallback = void Function(String event);
 
 /// [VerticalFeed]  on product cart callback
-typedef VerticalFeedOnProductCartUpdatedCallback = void Function(
-  String event,
-  STRCart? cart,
-  STRCartItem? change,
-  String responseId,
-);
+typedef VerticalFeedOnProductCartUpdatedCallback =
+    void Function(
+      String event,
+      STRCart? cart,
+      STRCartItem? change,
+      String responseId,
+    );
 
 /// [VerticalFeed]  on wishlist callback
-typedef VerticalFeedOnWishlistUpdatedCallback = void Function(
-  String event,
-  STRProductItem? item,
-  String responseId,
-);
+typedef VerticalFeedOnWishlistUpdatedCallback =
+    void Function(String event, STRProductItem? item, String responseId);
 
 class VerticalFeedController {
   final MethodChannel _methodChannel;
@@ -105,75 +95,64 @@ class VerticalFeedController {
   /// This function allows you to open a specific vertical feed item using
   /// `groupId` and `itemId`.
   Future<void> open(String groupId, String? itemId) {
-    return _methodChannel.invokeMethod(
-      'open',
-      <String, dynamic>{
-        'groupId': groupId,
-        'itemId': itemId,
-      },
-    );
+    return _methodChannel.invokeMethod('open', <String, dynamic>{
+      'groupId': groupId,
+      'itemId': itemId,
+    });
   }
 
   /// This function allows you to open using deeplink uri.
   Future<void> openUri(String uri) {
-    return _methodChannel.invokeMethod(
-      'openUri',
-      <String, dynamic>{
-        'uri': uri,
-      },
-    );
+    return _methodChannel.invokeMethod('openUri', <String, dynamic>{
+      'uri': uri,
+    });
   }
 
   /// This function allows you to hydrate products.
   Future<void> hydrateProducts(List<STRProductItem> products) {
-    return _methodChannel.invokeMethod(
-      'hydrateProducts',
-      <String, dynamic>{
-        'products': products.map((e) => e.toJson()).toList(),
-      },
-    );
+    return _methodChannel.invokeMethod('hydrateProducts', <String, dynamic>{
+      'products': products.map((e) => e.toJson()).toList(),
+    });
   }
 
   /// This function allows you to hydrate products.
   Future<void> hydrateWishlist(List<STRProductItem> products) {
-    return _methodChannel.invokeMethod(
-      'hydrateWishlist',
-      <String, dynamic>{
-        'products': products.map((e) => e.toJson()).toList(),
-      },
-    );
+    return _methodChannel.invokeMethod('hydrateWishlist', <String, dynamic>{
+      'products': products.map((e) => e.toJson()).toList(),
+    });
   }
 
   /// This function allows you to update your cart.
   Future<void> updateCart(Map cart) {
-    return _methodChannel.invokeMethod(
-      'updateCart',
-      <String, dynamic>{
-        'items': cart['items'],
-        'totalPrice': cart['totalPrice'],
-        'oldTotalPrice': cart['oldTotalPrice'],
-        'currency': cart['currency'],
-      },
-    );
+    return _methodChannel.invokeMethod('updateCart', <String, dynamic>{
+      'items': cart['items'],
+      'totalPrice': cart['totalPrice'],
+      'oldTotalPrice': cart['oldTotalPrice'],
+      'currency': cart['currency'],
+    });
   }
 
   Future<void> approveCartChange(
-      String responseId, Map<String, dynamic>? cart) {
-    return _methodChannel.invokeMethod(
-      'approveCartChange',
-      <String, dynamic>{'responseId': responseId, 'cart': cart},
-    );
+    String responseId,
+    Map<String, dynamic>? cart,
+  ) {
+    return _methodChannel.invokeMethod('approveCartChange', <String, dynamic>{
+      'responseId': responseId,
+      'cart': cart,
+    });
   }
 
   Future<void> rejectCartChange(String responseId, String failMessage) {
-    return _methodChannel.invokeMethod(
-      'rejectCartChange',
-      <String, dynamic>{'responseId': responseId, 'failMessage': failMessage},
-    );
+    return _methodChannel.invokeMethod('rejectCartChange', <String, dynamic>{
+      'responseId': responseId,
+      'failMessage': failMessage,
+    });
   }
 
   Future<void> approveWishlistChange(
-      String responseId, Map<String, dynamic>? item) {
+    String responseId,
+    Map<String, dynamic>? item,
+  ) {
     return _methodChannel.invokeMethod(
       'approveWishlistChange',
       <String, dynamic>{'responseId': responseId, 'item': item},
@@ -217,54 +196,49 @@ class VerticalFeedPresenterController {
 
   /// This function allows you to hydrate products.
   Future<void> hydrateProducts(List<STRProductItem> products) {
-    return _methodChannel.invokeMethod(
-      'hydrateProducts',
-      <String, dynamic>{
-        'products': products.map((e) => e.toJson()).toList(),
-      },
-    );
+    return _methodChannel.invokeMethod('hydrateProducts', <String, dynamic>{
+      'products': products.map((e) => e.toJson()).toList(),
+    });
   }
 
   /// This function allows you to hydrate products.
   Future<void> hydrateWishlist(List<STRProductItem> products) {
-    return _methodChannel.invokeMethod(
-      'hydrateWishlist',
-      <String, dynamic>{
-        'products': products.map((e) => e.toJson()).toList(),
-      },
-    );
+    return _methodChannel.invokeMethod('hydrateWishlist', <String, dynamic>{
+      'products': products.map((e) => e.toJson()).toList(),
+    });
   }
 
   /// This function allows you to update your cart.
   Future<void> updateCart(Map cart) {
-    return _methodChannel.invokeMethod(
-      'updateCart',
-      <String, dynamic>{
-        'items': cart['items'],
-        'totalPrice': cart['totalPrice'],
-        'oldTotalPrice': cart['oldTotalPrice'],
-        'currency': cart['currency'],
-      },
-    );
+    return _methodChannel.invokeMethod('updateCart', <String, dynamic>{
+      'items': cart['items'],
+      'totalPrice': cart['totalPrice'],
+      'oldTotalPrice': cart['oldTotalPrice'],
+      'currency': cart['currency'],
+    });
   }
 
   Future<void> approveCartChange(
-      String responseId, Map<String, dynamic>? cart) {
-    return _methodChannel.invokeMethod(
-      'approveCartChange',
-      <String, dynamic>{'responseId': responseId, 'cart': cart},
-    );
+    String responseId,
+    Map<String, dynamic>? cart,
+  ) {
+    return _methodChannel.invokeMethod('approveCartChange', <String, dynamic>{
+      'responseId': responseId,
+      'cart': cart,
+    });
   }
 
   Future<void> rejectCartChange(String responseId, String failMessage) {
-    return _methodChannel.invokeMethod(
-      'rejectCartChange',
-      <String, dynamic>{'responseId': responseId, 'failMessage': failMessage},
-    );
+    return _methodChannel.invokeMethod('rejectCartChange', <String, dynamic>{
+      'responseId': responseId,
+      'failMessage': failMessage,
+    });
   }
 
   Future<void> approveWishlistChange(
-      String responseId, Map<String, dynamic>? item) {
+    String responseId,
+    Map<String, dynamic>? item,
+  ) {
     return _methodChannel.invokeMethod(
       'approveWishlistChange',
       <String, dynamic>{'responseId': responseId, 'item': item},
@@ -457,8 +431,8 @@ class VerticalFeedParam {
       'storylyLocale': storylyLocale,
     };
     paramsMap['verticalFeedGroupStyling'] = {
-      'iconBackgroundColor':
-          verticalFeedGroupIconBackgroundColor?.toHexString(),
+      'iconBackgroundColor': verticalFeedGroupIconBackgroundColor
+          ?.toHexString(),
       'iconCornerRadius': verticalFeedGroupIconCornerRadius,
       'iconHeight': verticalFeedGroupIconHeight,
       'textColor': verticalFeedGroupTextColor?.toHexString(),
@@ -505,14 +479,16 @@ class VerticalFeedParam {
       'isFallbackEnabled': isProductFallbackEnabled,
       'isCartEnabled': isProductCartEnabled,
       'productFeed': storyProductFeed?.map(
-          (key, value) => MapEntry(key, value.map((e) => e.toJson()).toList())),
+        (key, value) => MapEntry(key, value.map((e) => e.toJson()).toList()),
+      ),
     };
     return paramsMap;
   }
 }
 
 VerticalFeedItemComponent? getVerticalFeedItemComponent(
-    Map<String, dynamic>? json) {
+  Map<String, dynamic>? json,
+) {
   if (json == null) return null;
 
   switch (json['type']) {
@@ -560,7 +536,10 @@ class VerticalFeedItemComponent {
 
   factory VerticalFeedItemComponent.fromJson(Map<String, dynamic> json) {
     return VerticalFeedItemComponent(
-        json['type'], json['id'], json['customPayload']);
+      json['type'],
+      json['id'],
+      json['customPayload'],
+    );
   }
 }
 
@@ -644,7 +623,8 @@ class VerticalFeedItemImageQuizComponent implements VerticalFeedItemComponent {
   final int selectedOptionIndex;
 
   factory VerticalFeedItemImageQuizComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemImageQuizComponent(
       type: json['type'],
       id: json['id'],
@@ -792,7 +772,8 @@ class VerticalFeedItemPromocodeComponent implements VerticalFeedItemComponent {
   final String text;
 
   factory VerticalFeedItemPromocodeComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemPromocodeComponent(
       type: json['type'],
       id: json['id'],
@@ -864,7 +845,8 @@ class VerticalFeedItemButtonActionComponent
   final List<STRProductItem>? products;
 
   factory VerticalFeedItemButtonActionComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemButtonActionComponent(
       type: json['type'],
       id: json['id'],
@@ -872,7 +854,8 @@ class VerticalFeedItemButtonActionComponent
       text: json['text'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -908,7 +891,8 @@ class VerticalFeedItemSwipeActionComponent
   final List<STRProductItem>? products;
 
   factory VerticalFeedItemSwipeActionComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemSwipeActionComponent(
       type: json['type'],
       id: json['id'],
@@ -916,7 +900,8 @@ class VerticalFeedItemSwipeActionComponent
       text: json['text'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -947,14 +932,16 @@ class VerticalFeedItemProductTagComponent implements VerticalFeedItemComponent {
   final List<STRProductItem>? products;
 
   factory VerticalFeedItemProductTagComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemProductTagComponent(
       type: json['type'],
       id: json['id'],
       customPayload: json['customPayload'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -990,7 +977,8 @@ class VerticalFeedItemProductCardComponent
   final List<STRProductItem>? products;
 
   factory VerticalFeedItemProductCardComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemProductCardComponent(
       type: json['type'],
       id: json['id'],
@@ -998,7 +986,8 @@ class VerticalFeedItemProductCardComponent
       text: json['text'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -1030,22 +1019,26 @@ class VerticalFeedItemProductCatalogComponent
   final List<STRProductItem>? products;
 
   factory VerticalFeedItemProductCatalogComponent.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return VerticalFeedItemProductCatalogComponent(
       type: json['type'],
       id: json['id'],
       customPayload: json['customPayload'],
       actionUrlList: castOrNull(
-          json['actionUrlList']?.map<String>((e) => e as String).toList()),
+        json['actionUrlList']?.map<String>((e) => e as String).toList(),
+      ),
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
 
 List<VerticalFeedGroup> verticalFeedGroupFromJson(List<dynamic> json) {
   return List<VerticalFeedGroup>.from(
-      json.map((x) => VerticalFeedGroup.fromJson(x)));
+    json.map((x) => VerticalFeedGroup.fromJson(x)),
+  );
 }
 
 /// This data class represents a story group in the VerticalFeed.
@@ -1096,7 +1089,8 @@ class VerticalFeedGroup {
       index: json['index'],
       iconUrl: json['iconUrl'],
       feedList: List<VerticalFeedItem>.from(
-          json['feedList'].map((x) => VerticalFeedItem.fromJson(x))),
+        json['feedList'].map((x) => VerticalFeedItem.fromJson(x)),
+      ),
       id: json['id'],
       pinned: json['pinned'],
       type: json['type'],
@@ -1108,17 +1102,18 @@ class VerticalFeedGroup {
 
 /// This data class represents a story inside a story group.
 class VerticalFeedItem {
-  VerticalFeedItem(
-      {required this.id,
-      required this.title,
-      required this.index,
-      required this.seen,
-      required this.currentTime,
-      this.previewUrl,
-      this.actionUrl,
-      this.actionProducts,
-      this.name,
-      this.verticalFeedItemComponentList});
+  VerticalFeedItem({
+    required this.id,
+    required this.title,
+    required this.index,
+    required this.seen,
+    required this.currentTime,
+    this.previewUrl,
+    this.actionUrl,
+    this.actionProducts,
+    this.name,
+    this.verticalFeedItemComponentList,
+  });
 
   /// ID of the story
   final String id;
@@ -1159,12 +1154,15 @@ class VerticalFeedItem {
       previewUrl: json['previewUrl'],
       actionUrl: json['actionUrl'],
       verticalFeedItemComponentList: castOrNull(
-          json['verticalFeedItemComponentList']
-              ?.map<VerticalFeedItemComponent?>(
-                  (e) => getVerticalFeedItemComponent(e))
-              .toList()),
+        json['verticalFeedItemComponentList']
+            ?.map<VerticalFeedItemComponent?>(
+              (e) => getVerticalFeedItemComponent(e),
+            )
+            .toList(),
+      ),
       actionProducts: List<STRProductItem>.from(
-          json['actionProducts'].map((x) => STRProductItem.fromJson(x))),
+        json['actionProducts'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }

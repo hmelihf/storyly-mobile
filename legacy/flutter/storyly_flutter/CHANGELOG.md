@@ -1,3 +1,28 @@
+### 4.21.2 (07.09.2026)
+* added Polish localization support
+* fixed capitalization in German localization
+* improved vertical feed tutorial view present logic
+* improved story transition handling in case of layer fails
+* added lowest price availability for eu regulations for product related interactive components
+* added auto alignment for text component to align texts based on layout direction in StorylyConfig
+* removed pointer icon to increase price text area in product card interactive component
+* added video cover support for vertical feed view
+* fixed rating interactive component interaction bug in story bar on ios platform
+* fixed rating interactive component interaction bug in vertical feed on ios platform
+* fixed a bug related to background color of swipe up interactive component on ios platform
+* fixed a bug related to vertical feed presenter layouting on ios platform
+* fixed duplicate video cover issue in story bar on ios platform
+* improved story and feed dismiss flow on ios platform
+* improved video observers for storyly and vertical feed on ios platform
+* fixed an alignment issue of lowest price in product catalog interactive component on ios platform
+* fixed an interaction bug related to comment interactive component on ios platform
+* improved view hierarchy of the story screen on ios platform
+* fixed an interaction crash on vertical feed presenter view if feed is empty on ios platform
+* fixed inconsistent scrolling behavior for video feed presenter on android platform
+* fixed a bug related to pause/resume flow of vertical feed presenter on android platform
+* fixed a bug related to shown results of quiz interactive component on android platform
+* improved project file structure on android platform
+
 ### 4.16.4 (21.01.2026)
 * improved gesture recognizers
 

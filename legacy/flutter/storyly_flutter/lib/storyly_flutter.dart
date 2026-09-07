@@ -9,62 +9,58 @@ import 'package:flutter/services.dart';
 import 'storyly_util.dart';
 
 /// [StorylyView] created callback
-typedef StorylyViewCreatedCallback = void Function(
-  StorylyViewController controller,
-);
+typedef StorylyViewCreatedCallback =
+    void Function(StorylyViewController controller);
 
 /// [StorylyView] loaded callback
-typedef StorylyViewLoadedCallback = void Function(
-  List<StoryGroup> storyGroups,
-  String dataSource,
-);
+typedef StorylyViewLoadedCallback =
+    void Function(List<StoryGroup> storyGroups, String dataSource);
 
 /// [StorylyView] load failed callback
-typedef StorylyViewLoadFailedCallback = void Function(
-  String message,
-);
+typedef StorylyViewLoadFailedCallback = void Function(String message);
 
 /// [StorylyView] event callback
-typedef StorylyViewEventCallback = void Function(
-  String event,
-  StoryGroup? storyGroup,
-  Story? story,
-  StoryComponent? storyComponent,
-);
+typedef StorylyViewEventCallback =
+    void Function(
+      String event,
+      StoryGroup? storyGroup,
+      Story? story,
+      StoryComponent? storyComponent,
+    );
 
 /// [StorylyView] action clicked callback
-typedef StorylyViewActionClickedCallback = void Function(
-  Story story,
-);
+typedef StorylyViewActionClickedCallback = void Function(Story story);
 
 /// [StorylyView]  on product hydration callback
-typedef StorylyViewOnProductHydrationCallback = void Function(
-  List<ProductInformation> products,
-);
+typedef StorylyViewOnProductHydrationCallback =
+    void Function(List<ProductInformation> products);
 
 /// [StorylyView]  on product event callback
 typedef StoryProductEventCallback = void Function(String event);
 
 /// [StorylyView]  on product cart callback
-typedef StorylyOnProductCartUpdatedCallback = void Function(
-    String event, STRCart? cart, STRCartItem? change, String responseId);
+typedef StorylyOnProductCartUpdatedCallback =
+    void Function(
+      String event,
+      STRCart? cart,
+      STRCartItem? change,
+      String responseId,
+    );
 
 /// [StorylyView]  on wishlist update callback
-typedef StorylyOnWishlistUpdatedCallback = void Function(
-    String event, STRProductItem? item, String responseId);
+typedef StorylyOnWishlistUpdatedCallback =
+    void Function(String event, STRProductItem? item, String responseId);
 
 /// [StorylyView] user interacted callback
-typedef StorylyViewUserInteractedCallback = void Function(
-  StoryGroup storyGroup,
-  Story story,
-  StoryComponent? storyComponent,
-);
+typedef StorylyViewUserInteractedCallback =
+    void Function(
+      StoryGroup storyGroup,
+      Story story,
+      StoryComponent? storyComponent,
+    );
 
 /// [StorylyView] size changed callback
-typedef StorylyViewSizeChanged = void Function(
-  double width,
-  double height,
-);
+typedef StorylyViewSizeChanged = void Function(double width, double height);
 
 /// Storyly UI Widget
 class StorylyView extends StatefulWidget {
@@ -130,24 +126,24 @@ class StorylyView extends StatefulWidget {
   /// This callback function will notify when size updates.
   final StorylyViewSizeChanged? storylySizeChanged;
 
-  const StorylyView(
-      {Key? key,
-      this.onStorylyViewCreated,
-      this.androidParam,
-      this.iosParam,
-      this.storylyLoaded,
-      this.storylyLoadFailed,
-      this.storylyEvent,
-      this.storylyActionClicked,
-      this.storylyStoryShown,
-      this.storylyStoryDismissed,
-      this.storylyUserInteracted,
-      this.storylyOnProductHydration,
-      this.storylyProductEvent,
-      this.storylyOnProductCartUpdated,
-      this.storylyOnWishlistUpdated,
-      this.storylySizeChanged})
-      : super(key: key);
+  const StorylyView({
+    Key? key,
+    this.onStorylyViewCreated,
+    this.androidParam,
+    this.iosParam,
+    this.storylyLoaded,
+    this.storylyLoadFailed,
+    this.storylyEvent,
+    this.storylyActionClicked,
+    this.storylyStoryShown,
+    this.storylyStoryDismissed,
+    this.storylyUserInteracted,
+    this.storylyOnProductHydration,
+    this.storylyProductEvent,
+    this.storylyOnProductCartUpdated,
+    this.storylyOnWishlistUpdated,
+    this.storylySizeChanged,
+  }) : super(key: key);
 
   @override
   State<StorylyView> createState() => _StorylyViewState();
@@ -163,24 +159,25 @@ class _StorylyViewState extends State<StorylyView> {
         viewType: viewType,
         surfaceFactory:
             (BuildContext context, PlatformViewController controller) {
-          return AndroidViewSurface(
-            controller: controller as AndroidViewController,
-            gestureRecognizers:
-                _buildGestureRecognizers(widget.androidParam ?? StorylyParam()),
-            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-          );
-        },
+              return AndroidViewSurface(
+                controller: controller as AndroidViewController,
+                gestureRecognizers: _buildGestureRecognizers(
+                  widget.androidParam ?? StorylyParam(),
+                ),
+                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+              );
+            },
         onCreatePlatformView: (PlatformViewCreationParams params) {
           return PlatformViewsService.initSurfaceAndroidView(
-            id: params.id,
-            viewType: viewType,
-            layoutDirection: TextDirection.ltr,
-            creationParams: widget.androidParam?._toMap() ?? {},
-            creationParamsCodec: const StandardMessageCodec(),
-            onFocus: () {
-              params.onFocusChanged(true);
-            },
-          )
+              id: params.id,
+              viewType: viewType,
+              layoutDirection: TextDirection.ltr,
+              creationParams: widget.androidParam?._toMap() ?? {},
+              creationParamsCodec: const StandardMessageCodec(),
+              onFocus: () {
+                params.onFocusChanged(true);
+              },
+            )
             ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
             ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
             ..create();
@@ -190,8 +187,9 @@ class _StorylyViewState extends State<StorylyView> {
       return UiKitView(
         viewType: viewType,
         onPlatformViewCreated: _onPlatformViewCreated,
-        gestureRecognizers:
-            _buildGestureRecognizers(widget.iosParam ?? StorylyParam()),
+        gestureRecognizers: _buildGestureRecognizers(
+          widget.iosParam ?? StorylyParam(),
+        ),
         creationParams: widget.iosParam?._toMap() ?? {},
         creationParamsCodec: const StandardMessageCodec(),
       );
@@ -202,17 +200,20 @@ class _StorylyViewState extends State<StorylyView> {
   }
 
   Set<Factory<OneSequenceGestureRecognizer>> _buildGestureRecognizers(
-      StorylyParam params) {
+    StorylyParam params,
+  ) {
     if (params.storyGroupListOrientation == 'vertical') {
       return <Factory<OneSequenceGestureRecognizer>>{
         Factory<VerticalDragGestureRecognizer>(
-            () => VerticalDragGestureRecognizer()),
+          () => VerticalDragGestureRecognizer(),
+        ),
         Factory<TapGestureRecognizer>(() => TapGestureRecognizer()),
       };
     } else {
       return <Factory<OneSequenceGestureRecognizer>>{
         Factory<HorizontalDragGestureRecognizer>(
-            () => HorizontalDragGestureRecognizer()),
+          () => HorizontalDragGestureRecognizer(),
+        ),
         Factory<TapGestureRecognizer>(() => TapGestureRecognizer()),
       };
     }
@@ -224,8 +225,9 @@ class _StorylyViewState extends State<StorylyView> {
     );
     methodChannel.setMethodCallHandler(_handleMethod);
 
-    widget.onStorylyViewCreated
-        ?.call(StorylyViewController(_id, methodChannel));
+    widget.onStorylyViewCreated?.call(
+      StorylyViewController(_id, methodChannel),
+    );
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
@@ -251,9 +253,7 @@ class _StorylyViewState extends State<StorylyView> {
         break;
       case 'storylyActionClicked':
         final jsonData = jsonDecode(jsonEncode(call.arguments));
-        widget.storylyActionClicked?.call(
-          Story.fromJson(jsonData),
-        );
+        widget.storylyActionClicked?.call(Story.fromJson(jsonData));
         break;
       case 'storylyStoryShown':
       case 'storylyStoryPresented':
@@ -292,8 +292,12 @@ class _StorylyViewState extends State<StorylyView> {
           change = STRCartItem.fromJson(jsonData['change']);
         }
 
-        widget.storylyOnProductCartUpdated
-            ?.call(jsonData['event'], cart, change, jsonData['responseId']);
+        widget.storylyOnProductCartUpdated?.call(
+          jsonData['event'],
+          cart,
+          change,
+          jsonData['responseId'],
+        );
         break;
       case 'storylyOnWishlistUpdated':
         final jsonData = jsonDecode(jsonEncode(call.arguments));
@@ -302,8 +306,11 @@ class _StorylyViewState extends State<StorylyView> {
           item = STRProductItem.fromJson(jsonData['item']);
         }
 
-        widget.storylyOnWishlistUpdated
-            ?.call(jsonData['event'], item, jsonData['responseId']);
+        widget.storylyOnWishlistUpdated?.call(
+          jsonData['event'],
+          item,
+          jsonData['responseId'],
+        );
         break;
       case 'storylySizeChanged':
         final jsonData = jsonDecode(jsonEncode(call.arguments));
@@ -345,75 +352,64 @@ class StorylyViewController {
   /// This function allows you to open a specific story using
   /// `storyGroupId` and `storyId`.
   Future<void> openStory(String storyGroupId, String? storyId) {
-    return _methodChannel.invokeMethod(
-      'openStory',
-      <String, dynamic>{
-        'storyGroupId': storyGroupId,
-        'storyId': storyId,
-      },
-    );
+    return _methodChannel.invokeMethod('openStory', <String, dynamic>{
+      'storyGroupId': storyGroupId,
+      'storyId': storyId,
+    });
   }
 
   /// This function allows you to open using deeplink uri.
   Future<void> openStoryUri(String uri) {
-    return _methodChannel.invokeMethod(
-      'openStoryUri',
-      <String, dynamic>{
-        'uri': uri,
-      },
-    );
+    return _methodChannel.invokeMethod('openStoryUri', <String, dynamic>{
+      'uri': uri,
+    });
   }
 
   /// This function allows you to hydrate products.
   Future<void> hydrateProducts(List<STRProductItem> products) {
-    return _methodChannel.invokeMethod(
-      'hydrateProducts',
-      <String, dynamic>{
-        'products': products.map((e) => e.toJson()).toList(),
-      },
-    );
+    return _methodChannel.invokeMethod('hydrateProducts', <String, dynamic>{
+      'products': products.map((e) => e.toJson()).toList(),
+    });
   }
 
   /// This function allows you to hydrate products.
   Future<void> hydrateWishlist(List<STRProductItem> products) {
-    return _methodChannel.invokeMethod(
-      'hydrateWishlist',
-      <String, dynamic>{
-        'products': products.map((e) => e.toJson()).toList(),
-      },
-    );
+    return _methodChannel.invokeMethod('hydrateWishlist', <String, dynamic>{
+      'products': products.map((e) => e.toJson()).toList(),
+    });
   }
 
   /// This function allows you to update your cart.
   Future<void> updateCart(Map cart) {
-    return _methodChannel.invokeMethod(
-      'updateCart',
-      <String, dynamic>{
-        'items': cart['items'],
-        'totalPrice': cart['totalPrice'],
-        'oldTotalPrice': cart['oldTotalPrice'],
-        'currency': cart['currency'],
-      },
-    );
+    return _methodChannel.invokeMethod('updateCart', <String, dynamic>{
+      'items': cart['items'],
+      'totalPrice': cart['totalPrice'],
+      'oldTotalPrice': cart['oldTotalPrice'],
+      'currency': cart['currency'],
+    });
   }
 
   Future<void> approveCartChange(
-      String responseId, Map<String, dynamic>? cart) {
-    return _methodChannel.invokeMethod(
-      'approveCartChange',
-      <String, dynamic>{'responseId': responseId, 'cart': cart},
-    );
+    String responseId,
+    Map<String, dynamic>? cart,
+  ) {
+    return _methodChannel.invokeMethod('approveCartChange', <String, dynamic>{
+      'responseId': responseId,
+      'cart': cart,
+    });
   }
 
   Future<void> rejectCartChange(String responseId, String failMessage) {
-    return _methodChannel.invokeMethod(
-      'rejectCartChange',
-      <String, dynamic>{'responseId': responseId, 'failMessage': failMessage},
-    );
+    return _methodChannel.invokeMethod('rejectCartChange', <String, dynamic>{
+      'responseId': responseId,
+      'failMessage': failMessage,
+    });
   }
 
   Future<void> approveWishlistChange(
-      String responseId, Map<String, dynamic>? item) {
+    String responseId,
+    Map<String, dynamic>? item,
+  ) {
     return _methodChannel.invokeMethod(
       'approveWishlistChange',
       <String, dynamic>{'responseId': responseId, 'item': item},
@@ -680,7 +676,8 @@ class StorylyParam {
       'isFallbackEnabled': isProductFallbackEnabled,
       'isCartEnabled': isProductCartEnabled,
       'productFeed': storyProductFeed?.map(
-          (key, value) => MapEntry(key, value.map((e) => e.toJson()).toList())),
+        (key, value) => MapEntry(key, value.map((e) => e.toJson()).toList()),
+      ),
     };
     paramsMap['storylyBackgroundColor'] = storylyBackgroundColor?.toHexString();
     return paramsMap;
@@ -1042,7 +1039,8 @@ class StoryButtonActionComponent implements StoryComponent {
       text: json['text'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -1084,7 +1082,8 @@ class StorySwipeActionComponent implements StoryComponent {
       text: json['text'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -1121,7 +1120,8 @@ class StoryProductTagComponent implements StoryComponent {
       customPayload: json['customPayload'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -1163,7 +1163,8 @@ class StoryProductCardComponent implements StoryComponent {
       text: json['text'],
       actionUrl: json['actionUrl'],
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -1199,9 +1200,11 @@ class StoryProductCatalogComponent implements StoryComponent {
       id: json['id'],
       customPayload: json['customPayload'],
       actionUrlList: castOrNull(
-          json['actionUrlList']?.map<String>((e) => e as String).toList()),
+        json['actionUrlList']?.map<String>((e) => e as String).toList(),
+      ),
       products: List<STRProductItem>.from(
-          json['products'].map((x) => STRProductItem.fromJson(x))),
+        json['products'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
@@ -1212,7 +1215,8 @@ List<StoryGroup> storyGroupFromJson(List<dynamic> json) {
 
 List<ProductInformation> productInformationFromJson(List<dynamic> json) {
   return List<ProductInformation>.from(
-      json.map((x) => ProductInformation.fromJson(x)));
+    json.map((x) => ProductInformation.fromJson(x)),
+  );
 }
 
 /// This data class represents a story group in the StorylyView.
@@ -1274,17 +1278,18 @@ class StoryGroup {
 
 /// This data class represents a story inside a story group.
 class Story {
-  Story(
-      {required this.id,
-      required this.title,
-      required this.index,
-      required this.seen,
-      required this.currentTime,
-      this.previewUrl,
-      this.actionUrl,
-      this.actionProducts,
-      this.name,
-      this.storyComponentList});
+  Story({
+    required this.id,
+    required this.title,
+    required this.index,
+    required this.seen,
+    required this.currentTime,
+    this.previewUrl,
+    this.actionUrl,
+    this.actionProducts,
+    this.name,
+    this.storyComponentList,
+  });
 
   /// ID of the story
   final String id;
@@ -1324,30 +1329,34 @@ class Story {
       currentTime: json['currentTime'],
       previewUrl: json['previewUrl'],
       actionUrl: json['actionUrl'],
-      storyComponentList: castOrNull(json['storyComponentList']
-          ?.map<StoryComponent?>((e) => getStorylyComponent(e))
-          .toList()),
+      storyComponentList: castOrNull(
+        json['storyComponentList']
+            ?.map<StoryComponent?>((e) => getStorylyComponent(e))
+            .toList(),
+      ),
       actionProducts: List<STRProductItem>.from(
-          json['actionProducts'].map((x) => STRProductItem.fromJson(x))),
+        json['actionProducts'].map((x) => STRProductItem.fromJson(x)),
+      ),
     );
   }
 }
 
 /// This data class represents a product
 class STRProductItem {
-  STRProductItem(
-      {required this.productId,
-      required this.productGroupId,
-      this.title,
-      this.desc,
-      required this.price,
-      this.salesPrice,
-      required this.currency,
-      this.imageUrls,
-      this.url,
-      this.variants,
-      this.ctaText,
-      this.wishlist});
+  STRProductItem({
+    required this.productId,
+    required this.productGroupId,
+    this.title,
+    this.desc,
+    required this.price,
+    this.salesPrice,
+    required this.currency,
+    this.imageUrls,
+    this.url,
+    this.variants,
+    this.ctaText,
+    this.wishlist,
+  });
 
   /// ID of the product
   final String productId;
@@ -1398,33 +1407,39 @@ class STRProductItem {
       "url": url,
       "variants": variants?.map((e) => e.toJson()).toList(),
       "ctaText": ctaText,
-      "wishlist": wishlist
+      "wishlist": wishlist,
     };
   }
 
   factory STRProductItem.fromJson(Map<String, dynamic> json) {
     return STRProductItem(
-        productId: json['productId'],
-        productGroupId: json['productGroupId'],
-        title: json['title'],
-        desc: json['desc'],
-        price: json['price'],
-        salesPrice: json['salesPrice'],
-        currency: json['currency'],
-        imageUrls: castOrNull(
-            json['imageUrls']?.map<String>((e) => e as String).toList()),
-        url: json['url'],
-        variants: List<STRProductVariant>.from(
-            json['variants'].map((x) => STRProductVariant.fromJson(x))),
-        ctaText: json['ctaText'],
-        wishlist: json['wishlist']);
+      productId: json['productId'],
+      productGroupId: json['productGroupId'],
+      title: json['title'],
+      desc: json['desc'],
+      price: json['price'],
+      salesPrice: json['salesPrice'],
+      currency: json['currency'],
+      imageUrls: castOrNull(
+        json['imageUrls']?.map<String>((e) => e as String).toList(),
+      ),
+      url: json['url'],
+      variants: List<STRProductVariant>.from(
+        json['variants'].map((x) => STRProductVariant.fromJson(x)),
+      ),
+      ctaText: json['ctaText'],
+      wishlist: json['wishlist'],
+    );
   }
 }
 
 /// This data class represents a variant inside product
 class STRProductVariant {
-  STRProductVariant(
-      {required this.name, required this.value, required this.key});
+  STRProductVariant({
+    required this.name,
+    required this.value,
+    required this.key,
+  });
 
   /// Name of the product
   final String name;
@@ -1441,17 +1456,21 @@ class STRProductVariant {
 
   factory STRProductVariant.fromJson(Map<String, dynamic> json) {
     return STRProductVariant(
-        name: json['name'], value: json['value'], key: json["key"]);
+      name: json['name'],
+      value: json['value'],
+      key: json["key"],
+    );
   }
 }
 
 /// This data class represents a product cart
 class STRCart {
-  STRCart(
-      {required this.items,
-      this.oldTotalPrice,
-      required this.totalPrice,
-      required this.currency});
+  STRCart({
+    required this.items,
+    this.oldTotalPrice,
+    required this.totalPrice,
+    required this.currency,
+  });
 
   /// List of STRCartItem objects representing the items added to the cart
   final List<STRCartItem> items;
@@ -1468,7 +1487,8 @@ class STRCart {
   factory STRCart.fromJson(Map<String, dynamic> json) {
     return STRCart(
       items: List<STRCartItem>.from(
-          json['items'].map((x) => STRCartItem.fromJson(x))),
+        json['items'].map((x) => STRCartItem.fromJson(x)),
+      ),
       oldTotalPrice: json['oldTotalPrice'],
       totalPrice: json['totalPrice'],
       currency: json['currency'],
@@ -1478,11 +1498,12 @@ class STRCart {
 
 /// This data class represents an item in product cart
 class STRCartItem {
-  STRCartItem(
-      {required this.item,
-      required this.quantity,
-      this.oldTotalPrice,
-      this.totalPrice});
+  STRCartItem({
+    required this.item,
+    required this.quantity,
+    this.oldTotalPrice,
+    this.totalPrice,
+  });
 
   /// Represents the product associated with this cart item
   final STRProductItem item;
@@ -1508,10 +1529,7 @@ class STRCartItem {
 
 /// This data class represents the story product information.
 class ProductInformation {
-  ProductInformation({
-    this.productId,
-    this.productGroupId,
-  });
+  ProductInformation({this.productId, this.productGroupId});
 
   final String? productId;
 
@@ -1519,6 +1537,8 @@ class ProductInformation {
 
   factory ProductInformation.fromJson(Map<String, dynamic> json) {
     return ProductInformation(
-        productId: json['productId'], productGroupId: json['productGroupId']);
+      productId: json['productId'],
+      productGroupId: json['productGroupId'],
+    );
   }
 }

@@ -69,7 +69,7 @@ class VerticalFeed extends StatefulWidget {
 
   /// This callback function will notify you about updates the cart in a VerticalFeed component
   final VerticalFeedOnProductCartUpdatedCallback?
-      verticalFeedOnProductCartUpdated;
+  verticalFeedOnProductCartUpdated;
 
   /// This callback function will notify you about updates the wishlist in a VerticalFeedBar component
   final VerticalFeedOnWishlistUpdatedCallback? verticalFeedOnWishlistUpdated;
@@ -107,27 +107,27 @@ class _VerticalFeedState extends State<VerticalFeed> {
         viewType: viewType,
         surfaceFactory:
             (BuildContext context, PlatformViewController controller) {
-          return AndroidViewSurface(
-            controller: controller as AndroidViewController,
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-              Factory<OneSequenceGestureRecognizer>(
-                () => EagerGestureRecognizer(),
-              ),
+              return AndroidViewSurface(
+                controller: controller as AndroidViewController,
+                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                  Factory<OneSequenceGestureRecognizer>(
+                    () => EagerGestureRecognizer(),
+                  ),
+                },
+                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+              );
             },
-            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-          );
-        },
         onCreatePlatformView: (PlatformViewCreationParams params) {
           return PlatformViewsService.initSurfaceAndroidView(
-            id: params.id,
-            viewType: viewType,
-            layoutDirection: TextDirection.ltr,
-            creationParams: widget.androidParam?.toMap() ?? {},
-            creationParamsCodec: const StandardMessageCodec(),
-            onFocus: () {
-              params.onFocusChanged(true);
-            },
-          )
+              id: params.id,
+              viewType: viewType,
+              layoutDirection: TextDirection.ltr,
+              creationParams: widget.androidParam?.toMap() ?? {},
+              creationParamsCodec: const StandardMessageCodec(),
+              onFocus: () {
+                params.onFocusChanged(true);
+              },
+            )
             ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
             ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
             ..create();
@@ -138,9 +138,7 @@ class _VerticalFeedState extends State<VerticalFeed> {
         viewType: viewType,
         onPlatformViewCreated: _onPlatformViewCreated,
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-          Factory<OneSequenceGestureRecognizer>(
-            () => EagerGestureRecognizer(),
-          ),
+          Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
         },
         creationParams: widget.iosParam?.toMap() ?? {},
         creationParamsCodec: const StandardMessageCodec(),
@@ -157,8 +155,9 @@ class _VerticalFeedState extends State<VerticalFeed> {
     );
     methodChannel.setMethodCallHandler(_handleMethod);
 
-    widget.onVerticalFeedCreated
-        ?.call(VerticalFeedController(_id, methodChannel));
+    widget.onVerticalFeedCreated?.call(
+      VerticalFeedController(_id, methodChannel),
+    );
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
@@ -227,8 +226,12 @@ class _VerticalFeedState extends State<VerticalFeed> {
           change = STRCartItem.fromJson(jsonData['change']);
         }
 
-        widget.verticalFeedOnProductCartUpdated
-            ?.call(jsonData['event'], cart, change, jsonData['responseId']);
+        widget.verticalFeedOnProductCartUpdated?.call(
+          jsonData['event'],
+          cart,
+          change,
+          jsonData['responseId'],
+        );
         break;
       case 'verticalFeedOnWishlistUpdated':
         final jsonData = jsonDecode(jsonEncode(call.arguments));
@@ -237,8 +240,11 @@ class _VerticalFeedState extends State<VerticalFeed> {
           item = STRProductItem.fromJson(jsonData['item']);
         }
 
-        widget.verticalFeedOnWishlistUpdated
-            ?.call(jsonData['event'], item, jsonData['responseId']);
+        widget.verticalFeedOnWishlistUpdated?.call(
+          jsonData['event'],
+          item,
+          jsonData['responseId'],
+        );
         break;
     }
   }
